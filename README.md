@@ -3,7 +3,6 @@
 
 <div align="center">
 
-![EcoScan Logo](https://via.placeholder.com/150x150/2D5F3F/FFFFFF?text=EcoScan)
 
 **Ứng dụng phân loại rác thải thông minh sử dụng Deep Learning**
 
@@ -74,7 +73,7 @@ EcoScan là ứng dụng web phân loại rác thải tự động sử dụng m
 ### 1. Clone repository
 
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/ecoscan-app.git
+git clone https://github.com/franceto/ecoscan-app.git
 cd ecoscan-app
 \`\`\`
 
@@ -134,11 +133,20 @@ curl -X POST http://localhost:8000/api/classify \
 ### Giao diện chính
 ![Main UI](screenshots/main.png)
 
-### Kết quả phân loại
-![Result](screenshots/result.png)
+### Upload ảnh
+![Upload](screenshots/upload.png)
+
+### Kết quả phân loại - Rác hữu cơ
+![Result Organic](screenshots/result-organic.png)
+
+### Kết quả phân loại - Rác tái chế
+![Result Recycle](screenshots/result-recycle.png)
 
 ### AI Chatbot
 ![Chatbot](screenshots/chatbot.png)
+
+### Xử lý lỗi
+![Error](screenshots/error.png)
 
 ---
 
@@ -234,7 +242,7 @@ Distributed under the MIT License. See \`LICENSE\` for more information.
 
 ## 👥 Authors
 
-**Your Name** - (https://github.com/franceto)
+**franceto (ANH PHAP TO)** - (https://github.com/franceto)
 
 ---
 
