@@ -1,4 +1,3 @@
-// ── DOM References ──
 const dropZone      = document.getElementById('dropZone');
 const fileInput     = document.getElementById('fileInput');
 const filePreview   = document.getElementById('filePreview');
@@ -35,21 +34,21 @@ const chatMessages   = document.getElementById('chatMessages');
 
 let selectedFile = null;
 
-// ── File helpers ──
 function showFileError(msg) {
     dropZone.style.display    = 'flex';
     filePreview.style.display = 'none';
     selectedFile = null;
 
-    // Hiện thông báo lỗi trong drop zone rồi tự biến mất sau 3s
     const hint = dropZone.querySelector('.drop-hint');
-    const orig  = hint.textContent;
-    hint.style.color  = '#DC2626';
-    hint.textContent  = msg;
-    setTimeout(() => {
-        hint.textContent = orig;
-        hint.style.color = '';
-    }, 3000);
+    if (hint) {
+        const orig = hint.textContent;
+        hint.style.color = '#DC2626';
+        hint.textContent = msg;
+        setTimeout(() => {
+            hint.textContent = orig;
+            hint.style.color = '';
+        }, 3000);
+    }
 }
 
 function formatSize(bytes) {
@@ -63,7 +62,6 @@ function getFormat(file) {
     return ext || file.type.split('/')[1].toUpperCase();
 }
 
-// ── Drag & Drop ──
 dropZone.addEventListener('click', () => fileInput.click());
 
 dropZone.addEventListener('dragover', (e) => {
@@ -85,12 +83,11 @@ dropZone.addEventListener('drop', (e) => {
 fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) handleFileSelect(file);
-    fileInput.value = '';   // reset để chọn lại cùng file vẫn trigger change
+    fileInput.value = '';
 });
 
-// ── Handle file selection ──
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/gif'];
-const MAX_SIZE_MB   = 10;
+const MAX_SIZE_MB = 10;
 
 function handleFileSelect(file) {
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -108,18 +105,17 @@ function handleFileSelect(file) {
         const dataURL = e.target.result;
         previewImage.src = dataURL;
 
-        // Extract pixel dimensions
         const img = new Image();
         img.onload = () => {
-            infoDimension.textContent = `${img.naturalWidth} × ${img.naturalHeight} px`;
+            if (infoDimension) infoDimension.textContent = `${img.naturalWidth} × ${img.naturalHeight} px`;
         };
         img.src = dataURL;
 
-        infoName.textContent   = file.name;
-        infoSize.textContent   = formatSize(file.size);
-        infoFormat.textContent = getFormat(file);
+        if (infoName) infoName.textContent = file.name;
+        if (infoSize) infoSize.textContent = formatSize(file.size);
+        if (infoFormat) infoFormat.textContent = getFormat(file);
 
-        dropZone.style.display  = 'none';
+        dropZone.style.display = 'none';
         filePreview.style.display = 'flex';
         classifyBtn.disabled = false;
     };
@@ -127,29 +123,31 @@ function handleFileSelect(file) {
     reader.readAsDataURL(file);
 }
 
-// ── Remove file ──
 removeBtn.addEventListener('click', () => {
     selectedFile = null;
     fileInput.value = '';
-    dropZone.style.display    = 'flex';
+    dropZone.style.display = 'flex';
     filePreview.style.display = 'none';
     classifyBtn.disabled = true;
 
     resultContent.style.display = 'none';
-    resultError.style.display   = 'none';
-    resultEmpty.style.display   = 'flex';
+    if (resultError) resultError.style.display = 'none';
+    resultEmpty.style.display = 'flex';
 
-    // Reset bars
-    confFill.style.width  = '0%';
-    bar1Fill.style.width  = '0%';
-    bar2Fill.style.width  = '0%';
+    if (confFill) confFill.style.width = '0%';
+    if (bar1Fill) bar1Fill.style.width = '0%';
+    if (bar2Fill) bar2Fill.style.width = '0%';
 });
 
-document.getElementById('retryBtn').addEventListener('click', () => removeBtn.click());
+if (document.getElementById('retryBtn')) {
+    document.getElementById('retryBtn').addEventListener('click', () => removeBtn.click());
+}
 
-// ── Classify ──
 classifyBtn.addEventListener('click', async () => {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+        alert('⚠️ Vui lòng chọn ảnh trước!');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('file', selectedFile);
@@ -163,130 +161,50 @@ classifyBtn.addEventListener('click', async () => {
         });
 
         const data = await response.json();
+        loadingOverlay.classList.remove('active');
 
-        if (data.error) {
-            loadingOverlay.classList.remove('active');
-            if (data.type === 'not_waste') {
-                resultEmpty.style.display   = 'none';
-                resultContent.style.display = 'none';
-                resultError.style.display   = 'flex';
-            } else {
-                alert(data.error);
-            }
+        if (response.status === 422) {
+            alert(`⚠️ ${data.error}\nĐộ tin cậy: ${data.confidence}%\nCần tối thiểu: 58%`);
             return;
         }
 
-        const isOrganic = data.class === 'O';
-        const predName  = isOrganic ? 'Rác hữu cơ' : 'Rác tái chế';
-        const otherName = isOrganic ? 'Rác tái chế' : 'Rác hữu cơ';
-        const conf1 = parseFloat(data.confidence).toFixed(1);
-        const conf2 = (100 - parseFloat(data.confidence)).toFixed(1);
+        if (response.status !== 200) {
+            alert('❌ ' + (data.error || 'Lỗi không xác định'));
+            return;
+        }
 
-        // Show result image (same as uploaded)
-        resultImage.src = previewImage.src;
+        const emoji = data.class === 'O' ? '+' : '+';
+        const conf = data.confidence;
 
-        // Prediction label
-        resultPrediction.textContent = predName;
+        if (resultImage) resultImage.src = previewImage.src;
+        if (resultPrediction) resultPrediction.textContent = `${emoji} ${data.class_name}`;
+        
+        if (confFill) confFill.style.width = `${conf}%`;
+        if (confPct) confPct.textContent = `${conf}%`;
 
-        // Confidence bar
-        confPct.textContent = `${conf1}%`;
+        if (bar1Label) bar1Label.textContent = 'Rác hữu cơ';
+        if (bar2Label) bar2Label.textContent = 'Rác tái chế';
 
-        // Bar chart
-        bar1Label.textContent = predName;
-        bar1Pct.textContent   = `${conf1}%`;
-        bar2Label.textContent = otherName;
-        bar2Pct.textContent   = `${conf2}%`;
+        const organicProb = data.class === 'O' ? conf : (100 - conf);
+        const recycleProb = data.class === 'R' ? conf : (100 - conf);
 
-        bar1Fill.className = `bar-fill ${isOrganic ? 'organic' : 'recycle'}`;
-        bar2Fill.className = `bar-fill ${isOrganic ? 'recycle' : 'organic'}`;
+        if (bar1Fill) bar1Fill.style.width = `${organicProb}%`;
+        if (bar1Pct) bar1Pct.textContent = `${organicProb.toFixed(1)}%`;
+        
+        if (bar2Fill) bar2Fill.style.width = `${recycleProb}%`;
+        if (bar2Pct) bar2Pct.textContent = `${recycleProb.toFixed(1)}%`;
 
-        // Description
-
-        // Show results, hide empty state
-        resultEmpty.style.display   = 'none';
+        resultEmpty.style.display = 'none';
+        if (resultError) resultError.style.display = 'none';
         resultContent.style.display = 'flex';
+
+    } catch (error) {
         loadingOverlay.classList.remove('active');
-
-        // Reset bar widths then animate (double RAF for reliable transition)
-        confFill.style.width = '0%';
-        bar1Fill.style.width = '0%';
-        bar2Fill.style.width = '0%';
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                confFill.style.width  = `${conf1}%`;
-                bar1Fill.style.width  = `${conf1}%`;
-                bar2Fill.style.width  = `${conf2}%`;
-            });
-        });
-
-    } catch (err) {
-        alert('Lỗi kết nối server!');
-        loadingOverlay.classList.remove('active');
+        alert('❌ Lỗi kết nối server!\n' + error.message);
+        console.error('Classify error:', error);
     }
 });
 
-// ── Batch classify ──
-const batchInput = document.getElementById('batchInput');
-
-batchBtn.addEventListener('click', () => batchInput.click());
-
-batchInput.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Reuse loading overlay with custom text
-    const loadingText = loadingOverlay.querySelector('p');
-    const loadingSub  = loadingOverlay.querySelector('span');
-    const origText    = loadingText.textContent;
-    const origSub     = loadingSub.textContent;
-
-    loadingText.textContent = 'Đang phân loại hàng loạt...';
-    loadingSub.textContent  = 'Vui lòng chờ, đang xử lý từng ảnh';
-    loadingOverlay.classList.add('active');
-
-    try {
-        const response = await fetch('/api/batch-classify', {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (!response.ok) {
-            try {
-                const err = await response.json();
-                alert(err.error || err.detail || `Lỗi server (${response.status})`);
-            } catch {
-                alert(`Lỗi server (${response.status})`);
-            }
-            return;
-        }
-
-        // Trigger PDF download
-        const blob = await response.blob();
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        const ts   = new Date().toISOString().slice(0,19).replace(/[-:T]/g, (c) => c === 'T' ? '_' : c);
-        a.href     = url;
-        a.download = `EcoScan_Report_${ts}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-    } catch (err) {
-        alert('Lỗi kết nối server!');
-    } finally {
-        loadingOverlay.classList.remove('active');
-        loadingText.textContent = origText;
-        loadingSub.textContent  = origSub;
-        batchInput.value = '';
-    }
-});
-
-// ── Chat ──
 chatFab.addEventListener('click', () => {
     chatModal.classList.add('active');
     if (chatMessages.children.length === 0) {
@@ -305,6 +223,7 @@ chatInput.addEventListener('keydown', (e) => {
         sendMessage();
     }
 });
+
 chatInput.addEventListener('input', () => {
     chatInput.style.height = 'auto';
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
@@ -317,6 +236,12 @@ async function sendMessage() {
     addMessage(message, 'user');
     chatInput.value = '';
     chatInput.style.height = 'auto';
+    sendChat.disabled = true;
+
+    const botDiv = document.createElement('div');
+    botDiv.className = 'message bot streaming';
+    chatMessages.appendChild(botDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     try {
         const response = await fetch('/api/chat', {
@@ -325,11 +250,29 @@ async function sendMessage() {
             body: JSON.stringify({ message })
         });
 
-        const data = await response.json();
-        addMessage(data.response, 'bot');
+        if (!response.ok) {
+            const data = await response.json();
+            botDiv.textContent = data.error || 'Lỗi kết nối AI!';
+            botDiv.classList.remove('streaming');
+            sendChat.disabled = false;
+            return;
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            botDiv.textContent += decoder.decode(value, { stream: true });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
     } catch (err) {
-        addMessage('Lỗi kết nối AI! Vui lòng thử lại.', 'bot');
+        botDiv.textContent = 'Lỗi kết nối AI! Vui lòng thử lại.';
+    } finally {
+        botDiv.classList.remove('streaming');
+        sendChat.disabled = false;
     }
 }
 

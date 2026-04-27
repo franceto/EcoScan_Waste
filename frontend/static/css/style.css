@@ -760,6 +760,18 @@ body {
     border-bottom-left-radius: 3px;
 }
 
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+.message.bot.streaming::after {
+    content: '▍';
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 0.8s step-start infinite;
+    color: var(--green-dark);
+}
+
 .chat-footer {
     display: flex;
     gap: 8px;

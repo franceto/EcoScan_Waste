@@ -1,6 +1,12 @@
-.venv/
-__pycache__/
+﻿__pycache__/
 *.pyc
+*.pyo
+.venv/
+venv/
+backend/models/*.pth
+backend/models/*.pt
 uploads/*
 !uploads/.gitkeep
-backend/models/*.pth
+test_*.py
+*.log
+.env

@@ -10,12 +10,18 @@ class WasteClassifier:
         checkpoint = torch.load(MODEL_PATH, map_location=self.device)
         
         self.model = models.resnet50(weights=None)
+        
+        in_features = self.model.fc.in_features
         self.model.fc = nn.Sequential(
-            nn.Dropout(0.5),
-            nn.Linear(self.model.fc.in_features, 2)
+            nn.Identity(),
+            nn.Linear(in_features, 2)
         )
         
-        self.model.load_state_dict(checkpoint["model_state_dict"])
+        state_dict = checkpoint["model_state_dict"]
+        filtered_state_dict = {k: v for k, v in state_dict.items() 
+                              if not any(x in k for x in ['scale', 'zero_point', '_packed_params'])}
+        
+        self.model.load_state_dict(filtered_state_dict, strict=False)
         self.model.to(self.device)
         self.model.eval()
         
