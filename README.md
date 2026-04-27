@@ -1,4 +1,3 @@
-@"
 # 🌿 EcoScan - AI Waste Classification App
 
 <div align="center">
@@ -256,9 +255,8 @@ Distributed under the MIT License. See \`LICENSE\` for more information.
 
 <div align="center">
 
-**⭐ Nếu project hữu ích, hãy cho một star nhé! ⭐**
+**⭐ Nếu project hữu ích, hãy cho một sao nhé! ⭐**
 
 Made with ❤️ by Franceto (ANH PHAP TO)
 
 </div>
-"@ | Out-File -FilePath README.md -Encoding utf8
