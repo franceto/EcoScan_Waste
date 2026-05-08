@@ -196,9 +196,9 @@ file: <image_file>
 
 ---
 
-## 📁 Cấu trúc thư mục
+## 📁 Project Structure
 
-\`\`\`
+```text
 Ecoscan_app/
 ├── backend/
 │   ├── models/           # Model files (.pth)
@@ -217,8 +217,7 @@ Ecoscan_app/
 ├── requirements.txt      # Python dependencies
 ├── .gitignore
 └── README.md
-\`\`\`
-
+```
 ---
 
 ## 🤝 Contributing
