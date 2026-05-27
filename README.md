@@ -1,202 +1,189 @@
-# 🌿 EcoScan - AI Waste Classification App
+# EcoScan - AI Waste Classification App
 
 <div align="center">
 
+<!-- Banner / Screenshot placeholder -->
+<img src="screenshots/main.png" alt="EcoScan Main Interface" width="90%" />
 
-**Ứng dụng phân loại rác thải thông minh sử dụng Deep Learning**
+<br/>
 
-[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-green.svg)](https://fastapi.tiangolo.com/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.11-red.svg)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Ứng dụng web phân loại rác thải hữu cơ và tái chế bằng Deep Learning.**
 
-[Demo](#demo) • [Features](#features) • [Installation](#installation) • [Usage](#usage) • [API](#api-documentation)
+<br/>
+
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.11-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-FACC15?style=for-the-badge)
 
 </div>
 
 ---
 
-## 📖 Giới thiệu
+## 1. Project Title & Catchphrase
 
-EcoScan là ứng dụng web phân loại rác thải tự động sử dụng mô hình ResNet50, giúp người dùng phân biệt **rác hữu cơ** và **rác tái chế** chỉ bằng một cú chụp ảnh.
+**EcoScan** giúp người dùng nhận diện nhanh rác thải thuộc nhóm **hữu cơ** hoặc **tái chế** thông qua ảnh đầu vào.
 
-### 🎯 Thống kê
-
-- **97%** - Độ chính xác trên tập kiểm thử
-- **2** - Loại rác: Hữu cơ & Tái chế
-- **~25,100** - Ảnh huấn luyện từ dataset Kaggle
+Dự án kết hợp mô hình **ResNet50**, giao diện web **FastAPI**, và chatbot tư vấn phân loại rác bằng **Groq API / Llama 3.3**.
 
 ---
 
-## ✨ Tính năng
+## 2. Quick Demo & Visuals
 
-### 🔍 Phân loại thông minh
-- Upload ảnh hoặc kéo-thả
-- Phân loại tức thì với độ tin cậy cao
-- Hiển thị biểu đồ xác suất chi tiết
+<div align="center">
 
-### 🤖 AI Chatbot
-- Tư vấn về phân loại rác thải
-- Hỗ trợ tiếng Việt
-- Powered by Groq API (Llama 3.3)
+[Live Demo Web App](#) · [Video Demo](#) · [Source Code](https://github.com/franceto/ecoscan-app)
 
-### 📊 Giao diện hiện đại
-- Responsive design
-- Dark mode support
-- Minimal & clean UI
+<br/><br/>
+
+<img src="screenshots/main.png" alt="EcoScan Demo" width="90%" />
+
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+## 3. Tính Năng Nổi Bật
 
-### Backend
-- **FastAPI** - Web framework
-- **PyTorch** - Deep learning
-- **ResNet50** - CNN architecture
-- **Groq API** - LLM chatbot
-
-### Frontend
-- **HTML5/CSS3/JavaScript**
-- **Vanilla JS** (no framework)
-- **Responsive Design**
-
-### Dataset
-- **Source**: [Kaggle - Waste Classification Data](https://www.kaggle.com/datasets/techsash/waste-classification-data)
-- **Classes**: Organic (O), Recyclable (R)
-- **Images**: ~25,100 training images
+- **Phân loại ảnh rác thải:** upload ảnh hoặc kéo-thả để dự đoán rác hữu cơ và rác tái chế.
+- **Dự đoán nhanh:** trả về nhãn, độ tin cậy và mô tả phân loại.
+- **Biểu đồ xác suất:** hiển thị trực quan mức độ tin cậy của từng lớp.
+- **AI Chatbot tiếng Việt:** tư vấn cách phân loại rác bằng Groq API.
+- **Giao diện web hiện đại:** responsive, tối giản, dễ sử dụng trên nhiều thiết bị.
 
 ---
 
-## 📦 Cài đặt
+## 4. Công Nghệ Sử Dụng
 
-### 1. Clone repository
+<div align="center">
 
-\`\`\`bash
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![ResNet50](https://img.shields.io/badge/ResNet50-CNN-111827?style=for-the-badge)
+![Groq](https://img.shields.io/badge/Groq-LLM%20API-F55036?style=for-the-badge)
+![HTML5](https://img.shields.io/badge/HTML5-Frontend-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-Styling-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Kaggle](https://img.shields.io/badge/Kaggle-Dataset-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)
+
+</div>
+
+---
+
+## 5. Triển Khai Nhanh
+
+**Prerequisites**
+
+- Python 3.11+
+- File model `resnet50_waste.pth`
+- Groq API key nếu sử dụng chatbot
+
+```bash
+# Clone repository
 git clone https://github.com/franceto/ecoscan-app.git
 cd ecoscan-app
-\`\`\`
 
-### 2. Tạo môi trường ảo
-
-\`\`\`bash
+# Tạo và kích hoạt môi trường ảo
 python -m venv .venv
-.venv\Scripts\activate  # Windows
-source .venv/bin/activate  # Linux/Mac
-\`\`\`
+.venv\Scripts\activate
 
-### 3. Cài đặt dependencies
-
-\`\`\`bash
+# Cài đặt thư viện phụ thuộc
 pip install -r requirements.txt
-\`\`\`
 
-### 4. Download mô hình ResNet50
+# Đặt model vào đúng thư mục
+# backend/models/resnet50_waste.pth
 
-**Tải file model** từ [Google Drive](https://drive.google.com/YOUR_LINK) và đặt vào:
+# Cấu hình Groq API key trong backend/config.py
+# GROQ_API_KEY = "your-groq-api-key-here"
 
-\`\`\`
-backend/models/resnet50_waste.pth
-\`\`\`
-
-### 5. Cấu hình Groq API
-
-Sửa file \`backend/config.py\`:
-
-\`\`\`python
-GROQ_API_KEY = "your-groq-api-key-here"
-\`\`\`
-
----
-
-## 🚀 Sử dụng
-
-### Chạy server
-
-\`\`\`bash
+# Khởi chạy ứng dụng
 python -m backend.main
-\`\`\`
+```
 
-Server sẽ chạy tại: **http://localhost:8000**
+Ứng dụng chạy mặc định tại:
 
-### Test API
-
-\`\`\`bash
-curl -X POST http://localhost:8000/api/classify \
-  -F "file=@test_image.jpg"
-\`\`\`
+```text
+http://localhost:8000
+```
 
 ---
 
-## 📸 Screenshots
+## 6. Tài Liệu Dự Án
 
-### Giao diện chính
-![Main UI](screenshots/main.png)
+### Dataset
 
-### Upload ảnh
-![Upload](screenshots/upload.png)
+| Hạng mục | Thông tin |
+|---|---|
+| Nguồn dữ liệu | Kaggle - Waste Classification Data |
+| Số lớp | 2 |
+| Nhãn | Organic, Recyclable |
+| Số ảnh huấn luyện | Khoảng 25,100 ảnh |
+| Mô hình sử dụng | ResNet50 |
+| Độ chính xác test | Khoảng 97% |
 
-### Kết quả phân loại - Rác hữu cơ
-![Result Organic](screenshots/result-organic.png)
+Dataset: [Waste Classification Data](https://www.kaggle.com/datasets/techsash/waste-classification-data)
 
-### Kết quả phân loại - Rác tái chế
-![Result Recycle](screenshots/result-recycle.png)
+### API Endpoints
 
-### AI Chatbot
-![Chatbot](screenshots/chatbot.png)
+#### POST `/api/classify`
 
-### Xử lý lỗi
-![Error](screenshots/error.png)
+Phân loại ảnh rác thải.
 
----
+**Request**
 
-## 📡 API Documentation
-
-### POST /api/classify
-
-**Request:**
-\`\`\`
+```text
 Content-Type: multipart/form-data
-file: <image_file>
-\`\`\`
+file: image_file
+```
 
-**Response (Success):**
-\`\`\`json
+**Response**
+
+```json
 {
   "class": "O",
   "class_name": "Rác hữu cơ",
   "confidence": 95.5,
   "description": "Rác hữu cơ bao gồm thực phẩm thừa..."
 }
-\`\`\`
+```
 
-**Response (Low Confidence):**
-\`\`\`json
+#### POST `/api/chat`
+
+Gửi câu hỏi cho chatbot tư vấn phân loại rác.
+
+**Request**
+
+```json
 {
-  "type": "not_waste",
-  "error": "Không nhận diện được rác thải",
-  "confidence": 45.2
+  "message": "Phân biệt rác hữu cơ và rác tái chế như thế nào?"
 }
-\`\`\`
+```
 
-### POST /api/chat
+**Response**
 
-**Request:**
-\`\`\`json
+```json
 {
-  "message": "Phân biệt rác hữu cơ và tái chế như thế nào?"
+  "response": "Rác hữu cơ thường là thực phẩm thừa, lá cây..."
 }
-\`\`\`
+```
 
-**Response:**
-\`\`\`json
-{
-  "response": "Rác hữu cơ là..."
-}
-\`\`\`
+### Screenshots
 
----
+<div align="center">
 
-## 📁 Project Structure
+<img src="screenshots/main.png" alt="Main UI" width="80%" />
+<br/><br/>
+<img src="screenshots/upload.png" alt="Upload Image" width="80%" />
+<br/><br/>
+<img src="screenshots/result-organic.png" alt="Organic Result" width="80%" />
+<br/><br/>
+<img src="screenshots/result-recycle.png" alt="Recycle Result" width="80%" />
+<br/><br/>
+<img src="screenshots/chatbot.png" alt="Chatbot" width="80%" />
+
+</div>
+
+### Project Structure
 
 ```text
 Ecoscan_app/
@@ -218,44 +205,47 @@ Ecoscan_app/
 ├── .gitignore
 └── README.md
 ```
----
 
-## 🤝 Contributing
+### Contributing
 
-Contributions are welcome! Please:
+```bash
+# Fork repository trên GitHub
 
-1. Fork the project
-2. Create your feature branch (\`git checkout -b feature/AmazingFeature\`)
-3. Commit your changes (\`git commit -m 'Add AmazingFeature'\`)
-4. Push to the branch (\`git push origin feature/AmazingFeature\`)
-5. Open a Pull Request
+# Tạo branch mới
+git checkout -b feature/your-feature-name
 
----
+# Commit thay đổi
+git commit -m "Add your feature"
 
-## 📝 License
+# Push branch
+git push origin feature/your-feature-name
+```
 
-Distributed under the MIT License. See \`LICENSE\` for more information.
+Sau đó mở Pull Request để đóng góp.
 
----
+### License
 
-## 👥 Authors
+Dự án được phân phối theo giấy phép **MIT License**. Xem thêm trong file `LICENSE`.
 
-**franceto (ANH PHAP TO)** - (https://github.com/franceto)
+### Author
 
----
+**franceto (ANH PHAP TO)**  
+GitHub: [https://github.com/franceto](https://github.com/franceto)
 
-## 🙏 Acknowledgments
+### Acknowledgments
 
 - Dataset: [Waste Classification Data - Kaggle](https://www.kaggle.com/datasets/techsash/waste-classification-data)
-- Model Architecture: ResNet50 (PyTorch)
-- LLM API: Groq (Llama 3.3)
+- Model Architecture: ResNet50
+- Deep Learning Framework: PyTorch
+- Backend Framework: FastAPI
+- LLM API: Groq / Llama 3.3
 
 ---
 
 <div align="center">
 
-**⭐ Nếu project hữu ích, hãy cho một sao nhé! ⭐**
+Nếu hữu ích, hãy cho repository một sao.
 
-Made with ❤️ by Franceto (ANH PHAP TO)
+Made by **Franceto (ANH PHAP TO)**
 
 </div>
